@@ -1,6 +1,6 @@
 <a href="https://weidex.market" target="_blank"><img src="https://weidex.market/images/logo.svg" alt="weiDex" width="200px" height="200px"></a>
 
-[![Build Status](https://api.travis-ci.com/kraikov/weiDex.svg?branch=master)](https://travis-ci.com/kraikov/weiDex.svg?branch=master)
+[![Build Status](https://api.travis-ci.com/kraikov/weiDex.svg?branch=master)](https://travis-ci.com/kraikov/weiDex)
 
 
 # weiDex
