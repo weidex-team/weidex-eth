@@ -40,7 +40,7 @@ async function _getContract(mock, wallet, params) {
     return [contractAddress, contract.abi];
 }
 
-async function _deploy(wallet, contract, gasLimit = 0xfffffff, params) {
+async function _deploy(wallet, contract, gasLimit = config.defaultGasLimit, params) {
     const weidexDeployTransaction = ethers.Contract.getDeployTransaction(contract.bytecode, contract.abi, ...params);
     weidexDeployTransaction.gasLimit = gasLimit;
     const weidexDeployTransactionHash = (await wallet.sendTransaction(weidexDeployTransaction)).hash;

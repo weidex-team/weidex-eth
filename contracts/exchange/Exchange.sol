@@ -187,6 +187,29 @@ contract Exchange is Ownable {
     }
 
     /**
+    * @dev Allows user to transfer specific Token inside the exchange.
+    * @param _tokenAddress address representing the token address.
+    * @param _to address representing the beneficier.
+    * @param _amount uint256 representing the amount to be transferred.
+    */
+    function transfer(
+        address _tokenAddress,
+        address _to,
+        uint256 _amount
+    )
+        external
+    {
+        require(
+            balances[_tokenAddress][msg.sender] >= _amount,
+            "Not enough funds to transfer."
+        );
+
+        balances[_tokenAddress][msg.sender] = balances[_tokenAddress][msg.sender].sub(_amount);
+
+        balances[_tokenAddress][_to] = balances[_tokenAddress][_to].add(_amount);
+    }
+
+    /**
     * @dev Common take order implementation
     * @param _order OrderLib.Order memory - order info
     * @param _takerSellAmount uint256 - amount being given by the taker
