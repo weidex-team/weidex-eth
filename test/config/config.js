@@ -16,5 +16,6 @@ module.exports = {
     minTokenForUpdate: "10",
     referralFeeRate: "5",
     feeRate: "1000",
-    etherAddress: "0x0000000000000000000000000000000000000000"
+    etherAddress: "0x0000000000000000000000000000000000000000",
+    defaultGasLimit: 0xfffffff
 };
