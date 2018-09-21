@@ -2,13 +2,14 @@ const { depositEthers, depositEthersWithReferral, depositTokens, depositTokensWi
 const { withdrawEthers, withdrawTokens } = require("./withdraw");
 const { takeBuyOrder, takeSellOrder, takeSellTokenOrder, getOrderHash, getSignature, constructOrder, cancelOrder } = require("./order");
 const { deployToken, deployNewWeidexExchangeContract, deployWeiDexExchangeContract } = require("./deployer");
-const { transferTokens } = require("./transfer");
+const { transferTokens, exchangeTransfer } = require("./transfer");
 
 module.exports = {
     deployWeiDexExchangeContract,
     deployNewWeidexExchangeContract,
     deployToken,
     transferTokens,
+    exchangeTransfer,
     depositTokens,
     depositTokensWithReferral,
     depositEthers,
