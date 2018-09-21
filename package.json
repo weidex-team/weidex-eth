@@ -1,0 +1,25 @@
+{
+    "name": "weidex-contracts",
+    "version": "1.0.0",
+    "description": "WeiDex Smart Contracts written in Solidity",
+    "scripts": {
+        "test": "solidity-coverage"
+    },
+    "author": "WeiChain Ltd",
+    "license": "MIT",
+    "dependencies": {
+        "chai": "^4.1.2",
+        "ethers": "^3.0.25",
+        "ganache-cli": "^6.1.8",
+        "mocha": "^5.2.0",
+        "solc": "^0.4.24",
+        "web3": "^0.20.6"
+    },
+    "devDependencies": {
+        "eslint": "^4.19.1",
+        "eslint-config-prettier": "^2.9.0",
+        "eslint-plugin-prettier": "^2.6.0",
+        "prettier": "^1.8.2",
+        "solidity-coverage": "^0.5.11"
+    }
+}
