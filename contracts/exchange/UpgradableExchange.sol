@@ -1,9 +1,12 @@
 pragma solidity 0.4.24;
 
 import "./Exchange.sol";
+import "./IUpgradableExchange.sol";
 import "../utils/Token.sol";
 
 contract UpgradableExchange is Exchange {
+
+    uint8 constant public VERSION = 0;
 
     address public newExchangeAddress;
 
@@ -44,7 +47,7 @@ contract UpgradableExchange is Exchange {
         );
 
         require(
-            Exchange(newExchangeAddress).VERSION() > VERSION,
+            IUpgradableExchange(newExchangeAddress).VERSION() > VERSION,
             "New exchange version should be greater than the current version."
         );
 
@@ -64,7 +67,7 @@ contract UpgradableExchange is Exchange {
         if (etherAmount > 0) {
             balances[ETH][msg.sender] = 0;
 
-            UpgradableExchange(newExchangeAddress).importEthers.value(etherAmount)(msg.sender);
+            IUpgradableExchange(newExchangeAddress).importEthers.value(etherAmount)(msg.sender);
         }
     }
 
@@ -91,85 +94,8 @@ contract UpgradableExchange is Exchange {
 
             balances[tokenAddress][msg.sender] = 0;
 
-            UpgradableExchange(newExchangeAddress).importTokens(tokenAddress, tokenAmount, msg.sender);
+            IUpgradableExchange(newExchangeAddress).importTokens(tokenAddress, tokenAmount, msg.sender);
         }
     }
-
-    /**
-    * @dev Helper function to migrate user's Ethers. Should be called only from the new exchange contract.
-    * @param _user address representing the user address whos funds are being migrated.
-    */
-    function importEthers(address _user)
-        external
-        payable
-    {
-        require(
-            false != isMigrationAllowed,
-            "Fund migration is not allowed"
-        );
-
-        require(
-            _user != address(0x0),
-            "Invalid user. Address is not set yet."
-        );
-
-        require(
-            msg.value > 0,
-            "Exported ether amount should be greater than 0"
-        );
-
-        require(
-            UpgradableExchange(msg.sender).VERSION() < VERSION,
-            "This function can only be called from the new exchange contract"
-        );
-
-        balances[ETH][_user] = balances[ETH][_user].add(msg.value);
-    }
-
-    /**
-    * @dev Helper function to migrate user's Tokens. Should be called only from the new exchange contract.
-    * @param _tokenAddress address representing the token address which is being migrated.
-    * @param _tokenAmount uint256 representing the token amount being being migrated.
-    * @param _user address representing the user address whos funds are being migrated.
-    */
-    function importTokens(
-        address _tokenAddress,
-        uint256 _tokenAmount,
-        address _user
-    )
-        external
-    {
-        require(
-            false != isMigrationAllowed,
-            "Fund migration is not allowed"
-        );
-
-        require(
-            _tokenAddress != ETH,
-            "Ether exporting is handled in another function."
-        );
-
-        require(
-            _user != ETH,
-            "Invalid user."
-        );
-
-        require(
-            _tokenAmount > 0,
-            "Token amount should be greater than 0."
-        );
-
-        require(
-            UpgradableExchange(msg.sender).VERSION() < VERSION,
-            "This function can only be called from the new exchange contract"
-        );
-
-        require(
-            Token(_tokenAddress).transferFrom(msg.sender, this, _tokenAmount),
-            "Transfer from failed."
-        );
-
-        balances[_tokenAddress][_user] = balances[_tokenAddress][_user].add(_tokenAmount);
-    }
-
+    
 }

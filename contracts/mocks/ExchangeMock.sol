@@ -8,8 +8,6 @@ contract ExchangeMock is Ownable {
 
     using Math for uint256;
 
-    uint8 constant public VERSION = 1;
-
     mapping(address => mapping(address => uint256)) public balances;
 
     address constant public ETH = address(0x0);

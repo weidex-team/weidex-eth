@@ -21,9 +21,6 @@ contract Exchange is Ownable {
 
     address public feeAccount;
 
-    uint8 constant public VERSION = 0;
-
-
     constructor(
         address _feeAccount,
         uint256 _feeRate

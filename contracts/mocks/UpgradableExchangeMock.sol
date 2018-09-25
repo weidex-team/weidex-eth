@@ -1,11 +1,13 @@
 pragma solidity 0.4.24;
 
 import "../exchange/Exchange.sol";
-import "../exchange/UpgradableExchange.sol";
+import "../exchange/IUpgradableExchange.sol";
 import "./ExchangeMock.sol";
 import "../utils/Token.sol";
 
 contract UpgradableExchangeMock is ExchangeMock {
+
+    uint8 public VERSION = 1;
 
     address public newExchangeAddress;
 
@@ -22,6 +24,17 @@ contract UpgradableExchangeMock is ExchangeMock {
         onlyOwner
     {
         newExchangeAddress = _newExchangeAddress;
+    }
+
+    /**
+    * @dev Used for test purposes only.
+    * @param _version uint8 representing the new exchange version
+    */
+    function setMockExchangeVersion(uint8 _version)
+        external
+        onlyOwner
+    {
+        VERSION = _version;
     }
 
     /**
@@ -46,7 +59,7 @@ contract UpgradableExchangeMock is ExchangeMock {
         );
 
         require(
-            Exchange(newExchangeAddress).VERSION() > VERSION,
+            IUpgradableExchange(newExchangeAddress).VERSION() > VERSION,
             "New exchange version should be greater than the current version."
         );
 
@@ -66,7 +79,7 @@ contract UpgradableExchangeMock is ExchangeMock {
         if (etherAmount > 0) {
             balances[ETH][msg.sender] = 0;
 
-            UpgradableExchange(newExchangeAddress).importEthers.value(etherAmount)(msg.sender);
+            IUpgradableExchange(newExchangeAddress).importEthers.value(etherAmount)(msg.sender);
         }
     }
 
@@ -93,7 +106,7 @@ contract UpgradableExchangeMock is ExchangeMock {
 
             balances[tokenAddress][msg.sender] = 0;
 
-            UpgradableExchange(newExchangeAddress).importTokens(tokenAddress, tokenAmount, msg.sender);
+            IUpgradableExchange(newExchangeAddress).importTokens(tokenAddress, tokenAmount, msg.sender);
         }
     }
 
@@ -121,7 +134,7 @@ contract UpgradableExchangeMock is ExchangeMock {
         );
 
         require(
-            UpgradableExchange(msg.sender).VERSION() < VERSION,
+            IUpgradableExchange(msg.sender).VERSION() < VERSION,
             "This function can only be called from the new exchange contract"
         );
 
@@ -162,7 +175,7 @@ contract UpgradableExchangeMock is ExchangeMock {
         );
 
         require(
-            UpgradableExchange(msg.sender).VERSION() < VERSION,
+            IUpgradableExchange(msg.sender).VERSION() < VERSION,
             "This function can only be called from the new exchange contract"
         );
 
