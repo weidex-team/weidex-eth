@@ -5,3 +5,6 @@
 
 # weiDex
 To provide the most advanced decentralized exchange for our community, by encompassing superior technology, usability, advanced functionality, performance and customer service.
+
+## Documentation
+[Documentation](https://weidex.readthedocs.io/en/latest/)
