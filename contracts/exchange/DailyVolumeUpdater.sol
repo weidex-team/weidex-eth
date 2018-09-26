@@ -13,8 +13,6 @@ contract DailyVolumeUpdater is Ownable {
 
     uint256 private lastDay;
 
-    uint256 private lastVolumeCapUpdate;
-
     constructor()
         public
     {
@@ -25,21 +23,13 @@ contract DailyVolumeUpdater is Ownable {
 
     /**
     * @dev Allows the owner to change the daily volume capacity.
-    * Can be called once every 30 days.
     * @param _dailyVolumeCap uint256 representing the daily volume capacity
     */
     function setDailyVolumeCap(uint256 _dailyVolumeCap)
         public
         onlyOwner
     {
-        require(
-            lastVolumeCapUpdate + 30 days > block.timestamp,
-            "Daily volume cap can be updated once every 30 days"
-        );
-
         dailyVolumeCap = _dailyVolumeCap;
-
-        lastVolumeCapUpdate = block.timestamp;
     }
 
     /**
