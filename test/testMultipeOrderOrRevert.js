@@ -20,6 +20,9 @@ describe("multiple order fullfilment", () => {
     let v;
     let r;
     let s;
+    let firstOrder;
+    let secondOrder;
+    let thirdOrder;
 
     // takeSellOrder method id
     // i.e. the first 4 bytes of the hash of the function prototype
@@ -40,7 +43,7 @@ describe("multiple order fullfilment", () => {
         weidexContract = weidexContract.connect(exchangeOwner.wallet);
         await weidexContract.functions.allowOrRestrictMethod(methodId, true);
 
-        const firstOrder = contract.createOrder(
+        firstOrder = contract.createOrder(
             alice.wallet,
             tokenContractAddress,
             "10000000000000000000000",
@@ -50,10 +53,20 @@ describe("multiple order fullfilment", () => {
             cfg.exchange
         );
 
-        const secondOrder = contract.createOrder(
+        secondOrder = contract.createOrder(
             george.wallet,
             tokenContractAddress,
             "10000000000000000000000",
+            etherAddress,
+            "1000000000000000000",
+            1,
+            cfg.exchange
+        );
+
+        thirdOrder = contract.createOrder(
+            george.wallet,
+            tokenContractAddress,
+            "100000000000000000000000",
             etherAddress,
             "1000000000000000000",
             1,
@@ -71,10 +84,32 @@ describe("multiple order fullfilment", () => {
 
     });
 
-    describe("take take all possible sell orders", () => {
+    describe("take all sell orders or revert on failure", () => {
         it("should fail due to invalid method id", async() => {
             weidexContract = weidexContract.connect(evelyn.wallet);
-            await expectThrow(weidexContract.functions.takeAllPossible(
+            await expectThrow(weidexContract.functions.takeAllOrRevert(
+                orderAddresses,
+                orderValues,
+                takerSellAmounts,
+                v,
+                r,
+                s,
+                "0x12345678"),
+                'revert'
+            );
+        });
+
+        it("should fail due to one invalid order", async() => {
+            takerSellAmount = "1000000000000000000";
+            orderAddresses = [firstOrder.addresses, secondOrder.addresses, thirdOrder.addresses];
+            orderValues = [firstOrder.values, secondOrder.values, thirdOrder.values];
+            takerSellAmounts = [takerSellAmount, takerSellAmount, takerSellAmount];
+            v = [firstOrder.signature.v, secondOrder.signature.v, thirdOrder.signature.v];
+            r = [firstOrder.signature.r, secondOrder.signature.r, thirdOrder.signature.r];
+            s = [firstOrder.signature.s, secondOrder.signature.s, thirdOrder.signature.s];
+
+            weidexContract = weidexContract.connect(evelyn.wallet);
+            await expectThrow(weidexContract.functions.takeAllOrRevert(
                 orderAddresses,
                 orderValues,
                 takerSellAmounts,
@@ -87,8 +122,16 @@ describe("multiple order fullfilment", () => {
         });
 
         it("should execute multiple sell order without exception", async () => {
+            takerSellAmount = "1000000000000000000";
+            orderAddresses = [firstOrder.addresses, secondOrder.addresses];
+            orderValues = [firstOrder.values, secondOrder.values];
+            takerSellAmounts = [takerSellAmount, takerSellAmount];
+            v = [firstOrder.signature.v, secondOrder.signature.v];
+            r = [firstOrder.signature.r, secondOrder.signature.r];
+            s = [firstOrder.signature.s, secondOrder.signature.s];
+
             weidexContract = weidexContract.connect(evelyn.wallet);
-            await weidexContract.functions.takeAllPossible(
+            await weidexContract.functions.takeAllOrRevert(
                 orderAddresses,
                 orderValues,
                 takerSellAmounts,

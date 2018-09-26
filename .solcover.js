@@ -12,5 +12,5 @@ module.exports = {
         "--account=0x5e355a956164216933612072b0f3ac7769b349ba0a2a24660743f3fe64eb4485,10000000000000000000000 " +
         "--account=0xa7c460f3c34f0feac4b20dd7be5e59879d0ef1666385e7ec525cc8645c1f652d,10000000000000000000000 " +
         "--account=0x6ac4e3695db0106d16ad229fd905351dd044002cdf579a8959a33fee9fd76ba6,10000000000000000000000",
-    skipFiles: ["token/", "mocks/"]
+    skipFiles: ["token/", "mocks/", "utils/Ownable.sol", "utils/Math.sol"]
 };

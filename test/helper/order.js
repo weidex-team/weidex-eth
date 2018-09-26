@@ -12,11 +12,27 @@ module.exports = {
     constructOrder,
     takeSellOrder,
     takeSellTokenOrder,
-    cancelOrder
+    takeBuyTokenOrder,
+    cancelOrder,
+    createOrder
 };
+
+function createOrder(maker, sellToken, sellTokenAmount, buyToken, buyTokenAmount, nonce, exchange) {
+    const order = constructOrder(maker.address, sellToken, sellTokenAmount, buyToken, buyTokenAmount, nonce, exchange.address);
+    const signature = getSignature(order, maker);
+    const orderHash = getOrderHash(order);
+
+    const orderAddresses = [maker.address, sellToken, buyToken];
+    const orderValues = [sellTokenAmount, buyTokenAmount, nonce];
+    return {addresses: orderAddresses, values: orderValues, signature: signature, orderHash: orderHash}
+}
 
 async function takeSellTokenOrder(maker, taker, token, tokenAmount, etherAmount, nonce, exchange, takerSellAmount) {
     await _takeSellOrder(maker, taker, token, tokenAmount, etherAmount, nonce, exchange, takerSellAmount, "takeSellTokenOrder");
+}
+
+async function takeBuyTokenOrder(maker, taker, token, tokenAmount, etherAmount, nonce, exchange, takerSellAmount) {
+    await _takeBuyOrder(maker, taker, token, tokenAmount, etherAmount, nonce, exchange, takerSellAmount, "takeBuyTokenOrder");
 }
 
 async function takeSellOrder(maker, taker, token, tokenAmount, etherAmount, nonce, exchange, takerSellAmount) {
