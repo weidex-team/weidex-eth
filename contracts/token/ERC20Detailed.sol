@@ -40,4 +40,21 @@ contract ERC20Detailed is IERC20 {
     function decimals() public view returns(uint8) {
         return _decimals;
     }
+
+    function getBonusFactor(
+        uint256 /*_startTime*/,
+        uint256 /*_endTime*/,
+        uint256 /*_weiAmount*/
+    )
+        public
+        pure
+        returns (uint256)
+    {
+        return 0;
+    }
+
+
+    function isUserWhitelisted(address /*_user*/) public pure returns (bool) {
+        return true;
+    }
 }

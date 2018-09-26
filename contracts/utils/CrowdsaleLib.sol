@@ -6,6 +6,7 @@ library CrowdsaleLib {
         uint256 startTime;
         uint256 endTime;
         uint256 capacity;
+        uint256 leftAmount;
         uint256 tokenRatio;
         uint256 minContribution;
         uint256 maxContribution;
@@ -36,7 +37,7 @@ library CrowdsaleLib {
 
     function createCrowdsale(
         address _wallet,
-        uint256[7] _values
+        uint256[8] _values
     )
         internal
         pure
@@ -46,10 +47,11 @@ library CrowdsaleLib {
             startTime: _values[0],
             endTime: _values[1],
             capacity: _values[2],
-            tokenRatio: _values[3],
-            minContribution: _values[4],
-            maxContribution: _values[5],
-            weiRaised: _values[6],
+            leftAmount: _values[3],
+            tokenRatio: _values[4],
+            minContribution: _values[5],
+            maxContribution: _values[6],
+            weiRaised: _values[7],
             wallet: _wallet
         });
     }

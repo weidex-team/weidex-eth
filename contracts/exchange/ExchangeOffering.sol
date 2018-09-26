@@ -22,7 +22,7 @@ contract ExchangeOffering is Exchange {
     function registerCrowdsale(
         address _project,
         address _projectWallet,
-        uint256[7] _values
+        uint256[8] _values
     )
         public
         onlyOwner
@@ -51,9 +51,11 @@ contract ExchangeOffering is Exchange {
        public
        payable
     {
+        uint256 weiAmount = msg.value;
+
         address contributor = msg.sender;
 
-        uint256 weiAmount = msg.value;
+        address crowdsaleWallet = crowdsales[_project].wallet;
 
         require(
             isUserWhitelisted(_project, contributor), "User is not whitelisted"
@@ -72,15 +74,38 @@ contract ExchangeOffering is Exchange {
 
         uint256 totalPurchasedTokens = tokens.add(bonusAmount);
 
+        crowdsales[_project].leftAmount = crowdsales[_project].leftAmount.sub(totalPurchasedTokens);
+
         require(Token(_project).transfer(contributor, totalPurchasedTokens), "Transfer failed");
 
         crowdsales[_project].weiRaised = crowdsales[_project].weiRaised.add(weiAmount);
 
         userContributionForProject[_project][contributor] = userContributionForProject[_project][contributor].add(weiAmount);
 
-        balances[ETH][crowdsales[_project].wallet] = balances[ETH][crowdsales[_project].wallet].add(weiAmount);
+        balances[ETH][crowdsaleWallet] = balances[ETH][crowdsaleWallet].add(weiAmount);
 
         emit TokenPurchase(_project, contributor, totalPurchasedTokens, weiAmount);
+    }
+
+    function withdrawWhenFinished(address _project) public {
+
+        address crowdsaleWallet = crowdsales[_project].wallet;
+
+        require(
+            msg.sender == crowdsaleWallet,
+            "Only crowdsale owner can withdraw funds that are left."
+        );
+
+        require(
+            !crowdsales[_project].isOpened(),
+            "You can't withdraw funds yet. Crowdsale should end first."
+        );
+
+        uint256 leftAmount = crowdsales[_project].leftAmount;
+
+        crowdsales[_project].leftAmount = 0;
+
+        require(Token(_project).transfer(crowdsaleWallet, leftAmount), "Transfer failed");
     }
 
     function saleOpen(address _project)
@@ -128,7 +153,7 @@ contract ExchangeOffering is Exchange {
             }
 
             // token sale capacity check
-            if (crowdsales[_project].capacity > crowdsales[_project].weiRaised.add(_weiAmount)) {
+            if (crowdsales[_project].capacity < crowdsales[_project].weiRaised.add(_weiAmount)) {
                 return false;
             }
         } else {

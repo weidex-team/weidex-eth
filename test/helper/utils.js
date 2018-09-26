@@ -76,17 +76,17 @@ async function updateExchangeBalancesAfter(exchangeContract, tokenAddress) {
     await _updateExchangeBalances("exchangeBalanceAfter", exchangeContract, tokenAddress);
 }
 
-async function updateTokenBalancesBefore(tokenContract, tokenAddress) {
-    await _updateTokenBalances("tokenBalanceBefore", tokenContract, tokenAddress);
+async function updateTokenBalancesBefore(tokenContract) {
+    await _updateTokenBalances("tokenBalanceBefore", tokenContract);
 }
 
-async function updateTokenBalancesAfter(tokenContract, tokenAddress) {
-    await _updateTokenBalances("tokenBalanceAfter", tokenContract, tokenAddress);
+async function updateTokenBalancesAfter(tokenContract) {
+    await _updateTokenBalances("tokenBalanceAfter", tokenContract);
 }
 
-async function _updateTokenBalances(property, tokenContract, tokenAddress) {
+async function _updateTokenBalances(property, tokenContract) {
     for (const actor in actors) {
-        actors[actor][property] = await tokenContract.balanceOf(tokenAddress, actors[actor].wallet.address);
+        actors[actor][property] = await tokenContract.balanceOf(actors[actor].wallet.address);
     }
 }
 

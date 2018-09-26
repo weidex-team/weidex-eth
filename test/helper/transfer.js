@@ -1,19 +1,23 @@
 const assert = require("./assert").assertString;
 const ethers = require("ethers");
 
-module.exports = { transferTokens, exchangeTransfer };
+module.exports = { transferTokens, exchangeTransfer, transferTokensFor };
 
 async function transferTokens(tokenContract, wallet, amount) {
+    await transferTokensFor(tokenContract, wallet, amount, wallet.address);
+}
+
+async function transferTokensFor(tokenContract, wallet, amount, to) {
     const token = new ethers.Contract(tokenContract.address, tokenContract.abi, wallet);
 
-    const balanceBefore = await token.balanceOf(wallet.address);
+    const balanceBefore = await token.balanceOf(to);
     assert(balanceBefore, 0);
 
     const decimals = await token.decimals();
     const transferAmount = ethers.utils.parseUnits(amount.toString(10), decimals);
-    await token.functions.mint(wallet.address, transferAmount);
+    await token.functions.mint(to, transferAmount);
 
-    const balanceAfter = await token.balanceOf(wallet.address);
+    const balanceAfter = await token.balanceOf(to);
     assert(balanceAfter, transferAmount);
 }
 
