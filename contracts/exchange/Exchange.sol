@@ -92,8 +92,25 @@ contract Exchange is Ownable {
     */
     function depositEthers() external payable
     {
-        _depositEthers();
-        emit Deposit(ETH, msg.sender, msg.value, balances[ETH][msg.sender]);
+        address user = msg.sender;
+        _depositEthers(user);
+        emit Deposit(ETH, user, msg.value, balances[ETH][user]);
+    }
+
+    /**
+    * @dev Allows user to deposit Ethers for beneficiary in the exchange contract.
+    * @param _beneficiary address
+    * Only the beneficiary can withdraw these Ethers.
+    */
+    function depositEthersFor(
+        address
+        _beneficiary
+    )
+        external
+        payable
+    {
+        _depositEthers(_beneficiary);
+        emit Deposit(ETH, _beneficiary, msg.value, balances[ETH][_beneficiary]);
     }
 
     /**
@@ -108,16 +125,39 @@ contract Exchange is Ownable {
     )
         external
     {
-        _depositTokens(_tokenAddress, _amount);
-        emit Deposit(_tokenAddress, msg.sender, _amount, balances[_tokenAddress][msg.sender]);
+        address user = msg.sender;
+        _depositTokens(_tokenAddress, _amount, user);
+        emit Deposit(_tokenAddress, user, _amount, balances[_tokenAddress][user]);
+    }
+
+        /**
+    * @dev Allows user to deposit Tokens for beneficiary in the exchange contract.
+    * Only the beneficiary can withdraw these tokens.
+    * @param _tokenAddress address representing the token contract address.
+    * @param _amount uint256 representing the token amount to be deposited.
+    * @param _beneficiary address representing the token amount to be deposited.
+    */
+    function depositTokensFor(
+        address _tokenAddress,
+        uint256 _amount,
+        address _beneficiary
+    )
+        external
+    {
+        _depositTokens(_tokenAddress, _amount, _beneficiary);
+        emit Deposit(_tokenAddress, _beneficiary, _amount, balances[_tokenAddress][_beneficiary]);
     }
 
     /**
     * @dev Internal version of deposit Ethers.
     */
-    function _depositEthers() internal
+    function _depositEthers(
+        address
+        _beneficiary
+    )
+        internal
     {
-        balances[ETH][msg.sender] = balances[ETH][msg.sender].add(msg.value);
+        balances[ETH][_beneficiary] = balances[ETH][_beneficiary].add(msg.value);
     }
 
     /**
@@ -125,11 +165,12 @@ contract Exchange is Ownable {
     */
     function _depositTokens(
         address _tokenAddress,
-        uint256 _amount
+        uint256 _amount,
+        address _beneficiary
     )
         internal
     {
-        balances[_tokenAddress][msg.sender] = balances[_tokenAddress][msg.sender].add(_amount);
+        balances[_tokenAddress][_beneficiary] = balances[_tokenAddress][_beneficiary].add(_amount);
 
         require(
             Token(_tokenAddress).transferFrom(msg.sender, this, _amount),
