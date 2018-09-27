@@ -79,7 +79,7 @@ describe("migrate funds", async () => {
     it("should have funds of Alice transferred to the new exchange", async () => {
         weidexContract = weidexContract.connect(alice.wallet);
 
-        await weidexContract.migrateFunds([tokenContractAddress]);
+        await weidexContract.migrateFunds([tokenContractAddress, cfg.token10Decimals.address]);
 
         await utils.updateExchangeBalancesAfter(newWeidexContract, tokenContractAddress);
         assert(alice.exchangeBalanceAfter, "100000000000000000000000");
