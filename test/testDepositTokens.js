@@ -2,6 +2,7 @@ const actors = require("./config/actors");
 const contract = require("./helper/contract");
 const utils = require("./helper/utils");
 const assert = require("./helper/assert").assertString;
+const { expectThrow } = require("./helper/exceptions");
 
 const { alice, evelyn, george } = actors;
 
@@ -24,14 +25,7 @@ describe("deposit tokens", () => {
         });
 
         it("should throw exception due to not enough funds", async () => {
-            await contract
-                .depositTokens(evelyn.wallet, cfg.token, cfg.exchange, 50000)
-                .then(() => {
-                    throw new Error("Exception not thrown");
-                })
-                .catch(err => {
-                    assert(err.message, "VM Exception while processing transaction: revert");
-                });
+            await expectThrow(contract.depositTokens(evelyn.wallet, cfg.token, cfg.exchange, 50000), 'revert');
         });
     });
 
@@ -41,14 +35,7 @@ describe("deposit tokens", () => {
         });
 
         it("should throw exception when tries to reassign the referrer", async () => {
-            await contract
-                .depositTokensWithReferral(alice.wallet, cfg.token, cfg.exchange, 15000, george.wallet)
-                .then(() => {
-                    throw new Error("Exception not thrown");
-                })
-                .catch(err => {
-                    assert(err.message, "VM Exception while processing transaction: revert");
-                });
+            await expectThrow(contract.depositTokensWithReferral(alice.wallet, cfg.token, cfg.exchange, 15000, george.wallet), 'revert');
         });
     });
 });
