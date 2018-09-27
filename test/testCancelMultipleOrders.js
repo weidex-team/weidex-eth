@@ -37,7 +37,6 @@ describe("cancel multiple orders", () => {
     });
 
     it("should cancel multiple orders", async () => {
-
         weidexContract = weidexContract.connect(alice.wallet)
         await weidexContract.cancelMultipleOrders(
             [firstOrder.addresses, secondOrder.addresses],

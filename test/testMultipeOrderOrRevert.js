@@ -8,7 +8,7 @@ const { expectThrow } = require('./helper/exceptions')
 const etherAddress = config.etherAddress;
 const { exchangeOwner, feeAccount, alice, evelyn, george } = actors;
 
-describe("multiple order fullfilment", () => {
+describe("multiple order fullfilment or revert", () => {
     let cfg;
     let tokenContractAddress;
     let weidexContract;
@@ -80,8 +80,6 @@ describe("multiple order fullfilment", () => {
         v = [firstOrder.signature.v, secondOrder.signature.v];
         r = [firstOrder.signature.r, secondOrder.signature.r];
         s = [firstOrder.signature.s, secondOrder.signature.s];
-
-
     });
 
     describe("take all sell orders or revert on failure", () => {
@@ -116,7 +114,7 @@ describe("multiple order fullfilment", () => {
                 v,
                 r,
                 s,
-                "0x12345678"),
+                methodId),
                 'revert'
             );
         });

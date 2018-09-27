@@ -1,6 +1,6 @@
 const utils = require("./helper/utils");
 
-describe("basic scenario of buy order", () => {
+describe("set minimum tokens amount for update", () => {
     let cfg;
     let weidexContract;
 
@@ -9,9 +9,7 @@ describe("basic scenario of buy order", () => {
         weidexContract = cfg.exchange.instance;
     });
 
-    describe("set minimum tokens amount for update", () => {
-        it("should update the minimum amount for updating token price", async () => {
-            await weidexContract.setMinimumTokenAmountForUpdate(2000);
-        });
+    it("should update the minimum amount for updating token price", async () => {
+        await weidexContract.setMinimumTokenAmountForUpdate(2000);
     });
 });

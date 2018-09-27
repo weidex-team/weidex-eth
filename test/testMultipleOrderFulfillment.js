@@ -67,8 +67,6 @@ describe("multiple order fullfilment", () => {
         v = [firstOrder.signature.v, secondOrder.signature.v];
         r = [firstOrder.signature.r, secondOrder.signature.r];
         s = [firstOrder.signature.s, secondOrder.signature.s];
-
-
     });
 
     describe("take take all possible sell orders", () => {

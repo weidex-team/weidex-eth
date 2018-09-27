@@ -23,7 +23,7 @@ describe("basic scenario of buy order", () => {
     });
 
     describe("take buy order", () => {
-        it("should execute buyt oken order without exception", async () => {
+        it("should execute buy token order without exception", async () => {
             await contract.takeBuyTokenOrder(evelyn.wallet, alice.wallet, cfg.weidexToken, 5000, 1, 154, cfg.exchange, 5000);
         });
 
