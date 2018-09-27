@@ -26,7 +26,6 @@ describe("deposit for functionality", () => {
     describe("deposit tokens for", () => {
         it("should make a deposit", async () => {
             await contract.depositTokensFor(alice.wallet, cfg.token, cfg.exchange, 50000, evelyn.wallet.address);
-
         });
 
         it("should make another deposit", async () => {
