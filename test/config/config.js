@@ -17,5 +17,6 @@ module.exports = {
     referralFeeRate: "5",
     feeRate: "1000",
     etherAddress: "0x0000000000000000000000000000000000000000",
+    defaultAddress: "0x000000000000000000000000000000000000dead",
     defaultGasLimit: 0xfffffff
 };

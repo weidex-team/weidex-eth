@@ -14,6 +14,16 @@ contract DiscountTokenExchange is Exchange, DailyVolumeUpdater {
 
     bool internal initialized = false;
 
+    constructor(
+        address _discountTokenAddress,
+        uint256 _discountTokenRatio
+    )
+        public
+    {
+        discountTokenAddress = _discountTokenAddress;
+        discountTokenRatio = _discountTokenRatio;
+    }
+
     modifier onlyOnce() {
         require(
             initialized == false,

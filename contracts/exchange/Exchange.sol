@@ -25,7 +25,7 @@ contract Exchange is Ownable {
         address _feeAccount,
         uint256 _feeRate
     )
-    public
+        public
     {
         feeAccount = _feeAccount;
         feeRate = _feeRate;

@@ -7,10 +7,11 @@ const ERC20Mock = require("../../build/contracts/ERC20Mock");
 const OldERC20Mock = require("../../build/contracts/OldERC20Mock");
 const NewWeiDex = require("../../build/contracts/WeiDexMock");
 
+
 module.exports = { deployWeiDexExchangeContract, deployNewWeidexExchangeContract, deployToken, deployOldToken };
 
 async function deployWeiDexExchangeContract(wallet, feeWallet) {
-    const params = [feeWallet.address, config.feeRate, config.referralFeeRate];
+    const params = [feeWallet.address, config.feeRate, config.referralFeeRate, config.defaultAddress, config.tokenRatio];
     return await _deployExchange(WeiDex, wallet, params);
 }
 
