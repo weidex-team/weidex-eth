@@ -12,7 +12,7 @@ describe("should set new fee account", () => {
         weidexContract = cfg.exchange.instance;
     });
 
-    it("should have correct fee rate", async () => {
+    it("should have correct fee account", async () => {
         await weidexContract.setFeeAccount(alice.wallet.address);
 
         const feeAccount = await weidexContract.feeAccount();
@@ -21,7 +21,7 @@ describe("should set new fee account", () => {
     });
 
 
-    it("should throw exception if regular user tries to set the fee", async () => {
+    it("should throw exception if regular user tries to set the new fee account", async () => {
         weidexContract = weidexContract.connect(alice.wallet);
 
         const feeAccountBefore = await weidexContract.feeAccount();
