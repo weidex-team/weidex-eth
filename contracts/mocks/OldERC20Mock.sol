@@ -2,7 +2,6 @@ pragma solidity ^0.4.24;
 
 import "./OldERC20.sol";
 
-
 contract OldERC20Mock is OldERC20  {
     string private _name;
     string private _symbol;
