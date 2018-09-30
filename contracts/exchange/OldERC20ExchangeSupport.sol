@@ -76,16 +76,18 @@ contract OldERC20ExchangeSupport is Exchange, ReferralExchange {
     )
         external
     {
+        address user = msg.sender;
+
         require(
-            balances[_tokenAddress][msg.sender] >= _amount,
+            balances[_tokenAddress][user] >= _amount,
             "Not enough funds to withdraw."
         );
 
-        balances[_tokenAddress][msg.sender] = balances[_tokenAddress][msg.sender].sub(_amount);
+        balances[_tokenAddress][user] = balances[_tokenAddress][user].sub(_amount);
 
-        SafeOldERC20.transfer(_tokenAddress, msg.sender, _amount);
+        SafeOldERC20.transfer(_tokenAddress, user, _amount);
 
-        emit Withdraw(_tokenAddress, msg.sender, _amount, balances[_tokenAddress][msg.sender]);
+        emit Withdraw(_tokenAddress, user, _amount, balances[_tokenAddress][user]);
     }
 
     /**

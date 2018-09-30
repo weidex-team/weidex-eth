@@ -196,16 +196,18 @@ contract Exchange is Ownable {
     */
     function withdrawEthers(uint256 _amount) external
     {
+        address user = msg.sender;
+
         require(
-            balances[ETH][msg.sender] >= _amount,
+            balances[ETH][user] >= _amount,
             "Not enough funds to withdraw."
         );
 
-        balances[ETH][msg.sender] = balances[ETH][msg.sender].sub(_amount);
+        balances[ETH][user] = balances[ETH][user].sub(_amount);
 
-        msg.sender.transfer(_amount);
+        user.transfer(_amount);
 
-        emit Withdraw(ETH, msg.sender, _amount, balances[ETH][msg.sender]);
+        emit Withdraw(ETH, user, _amount, balances[ETH][user]);
     }
 
     /**
@@ -220,19 +222,21 @@ contract Exchange is Ownable {
     )
         external
     {
+        address user = msg.sender;
+
         require(
-            balances[_tokenAddress][msg.sender] >= _amount,
+            balances[_tokenAddress][user] >= _amount,
             "Not enough funds to withdraw."
         );
 
-        balances[_tokenAddress][msg.sender] = balances[_tokenAddress][msg.sender].sub(_amount);
+        balances[_tokenAddress][user] = balances[_tokenAddress][user].sub(_amount);
 
         require(
-            Token(_tokenAddress).transfer(msg.sender, _amount),
+            Token(_tokenAddress).transfer(user, _amount),
             "Token transfer is not successfull."
         );
 
-        emit Withdraw(_tokenAddress, msg.sender, _amount, balances[_tokenAddress][msg.sender]);
+        emit Withdraw(_tokenAddress, user, _amount, balances[_tokenAddress][user]);
     }
 
     /**
@@ -248,12 +252,14 @@ contract Exchange is Ownable {
     )
         external
     {
+        address user = msg.sender;
+
         require(
-            balances[_tokenAddress][msg.sender] >= _amount,
+            balances[_tokenAddress][user] >= _amount,
             "Not enough funds to transfer."
         );
 
-        balances[_tokenAddress][msg.sender] = balances[_tokenAddress][msg.sender].sub(_amount);
+        balances[_tokenAddress][user] = balances[_tokenAddress][user].sub(_amount);
 
         balances[_tokenAddress][_to] = balances[_tokenAddress][_to].add(_amount);
     }
