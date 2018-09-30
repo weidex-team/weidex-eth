@@ -21,11 +21,14 @@ contract WeiDex is DiscountTokenExchange, ReferralExchange, UpgradableExchange, 
     constructor(
         address _feeAccount,
         uint256 _feeRate,
-        uint256 _referralFeeRate
+        uint256 _referralFeeRate,
+        address _discountTokenAddress,
+        uint256 _discountTokenRatio
     )
         public
         Exchange(_feeAccount, _feeRate)
         ReferralExchange(_referralFeeRate)
+        DiscountTokenExchange(_discountTokenAddress, _discountTokenRatio)
     {
         // empty constructor
     }
