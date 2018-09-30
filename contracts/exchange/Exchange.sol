@@ -87,6 +87,17 @@ contract Exchange is Ownable {
     }
 
     /**
+    * @dev Owner can set the new fee account
+    * @param _feeAccount address
+    */
+    function setFeeAccount(address _feeAccount)
+        external
+        onlyOwner
+    {
+        feeAccount = _feeAccount;
+    }
+
+    /**
     * @dev Allows user to deposit Ethers in the exchange contract.
     * Only the respected user can withdraw these Ethers.
     */
