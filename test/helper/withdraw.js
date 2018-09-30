@@ -5,7 +5,8 @@ const etherAddress = config.etherAddress;
 
 module.exports = {
     withdrawEthers,
-    withdrawTokens
+    withdrawTokens,
+    withdrawOldTokens
 };
 
 async function withdrawEthers(exchangeContract, wallet, amount) {
@@ -22,22 +23,31 @@ async function withdrawEthers(exchangeContract, wallet, amount) {
 }
 
 async function withdrawTokens(exchangeContract, tokenContract, wallet, amount) {
-    const exchange = new ethers.Contract(exchangeContract.address, exchangeContract.abi, wallet);
+    await _withdrawTokens(exchangeContract, tokenContract, wallet, amount, "withdrawTokens(address,uint256)");
+}
 
+async function withdrawOldTokens(exchangeContract, tokenContract, wallet, amount) {
+    await _withdrawTokens(exchangeContract, tokenContract, wallet, amount, "withdrawOldTokens(address,uint256)");
+}
+
+async function _withdrawTokens(exchangeContract, tokenContract, wallet, amount, fn) {
+    const exchange = new ethers.Contract(exchangeContract.address, exchangeContract.abi, wallet);
     const token = new ethers.Contract(tokenContract.address, tokenContract.abi, wallet);
 
-    const exchangeBalanceBefore = await exchange.balances(tokenContract.address, wallet.address);
-
-    const tokenBalanceBefore = await token.balanceOf(tokenContract.address);
+    const userExchangeBalanceBefore = await exchange.balances(tokenContract.address, wallet.address);
+    const userTokenBalanceBefore = await token.balanceOf(wallet.address);
+    const exchangeTokenBalanceBefore = await token.balanceOf(exchangeContract.address);
 
     const decimals = await token.decimals();
     const withdrawAmount = ethers.utils.parseUnits(amount.toString(10), decimals);
 
-    await exchange.withdrawTokens(tokenContract.address, withdrawAmount.toString(10));
+    await exchange[fn](tokenContract.address, withdrawAmount.toString(10));
 
-    const tokenBalanceAfter = await token.balanceOf(wallet.address);
-    const exchangeBalanceAfter = await exchange.balances(tokenContract.address, wallet.address);
+    const userExchangeBalanceAfter = await exchange.balances(tokenContract.address, wallet.address);
+    const userTokenBalanceAfter = await token.balanceOf(wallet.address);
+    const exchangeTokenBalanceAfter = await token.balanceOf(exchangeContract.address);
 
-    assert(exchangeBalanceAfter, exchangeBalanceBefore.sub(withdrawAmount));
-    assert(tokenBalanceAfter, tokenBalanceBefore.add(withdrawAmount));
+    assert(userExchangeBalanceAfter, userExchangeBalanceBefore.sub(withdrawAmount));
+    assert(userTokenBalanceAfter, userTokenBalanceBefore.add(withdrawAmount));
+    assert(exchangeTokenBalanceAfter, exchangeTokenBalanceBefore.sub(withdrawAmount));
 }

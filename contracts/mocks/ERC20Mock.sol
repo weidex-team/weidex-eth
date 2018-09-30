@@ -17,4 +17,20 @@ contract ERC20Mock is ERC20, ERC20Detailed {
     function mint(address to, uint256 amount) public {
         _mint(to, amount);
     }
+
+    function getBonusFactor(
+        uint256 /*_startTime*/,
+        uint256 /*_endTime*/,
+        uint256 /*_weiAmount*/
+    )
+        public
+        pure
+        returns (uint256)
+    {
+        return 0;
+    }
+
+    function isUserWhitelisted(address /*_user*/) public pure returns (bool) {
+        return true;
+    }
 }

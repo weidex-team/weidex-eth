@@ -8,8 +8,9 @@ import "./DiscountTokenExchange.sol";
 import "./ReferralExchange.sol";
 import "./UpgradableExchange.sol";
 import "./ExchangeOffering.sol";
+import "./OldERC20ExchangeSupport.sol";
 
-contract WeiDex is DiscountTokenExchange, ReferralExchange, UpgradableExchange, ExchangeOffering  {
+contract WeiDex is DiscountTokenExchange, ReferralExchange, UpgradableExchange, ExchangeOffering, OldERC20ExchangeSupport  {
 
     mapping(bytes4 => bool) private allowedMethods;
 

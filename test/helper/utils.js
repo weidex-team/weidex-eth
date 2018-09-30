@@ -39,11 +39,20 @@ async function init() {
     const weidexContract = new ethers.Contract(weidexContractAddress, weidexAbi, exchangeOwner.wallet);
     await weidexContract.setDiscountToken(weidexTokenAddress, tokenRatio, minTokenForUpdate);
 
+    // Old ERC20 token
+    const [oldTokenContractAddress, oldTokenAbi] = await contract.deployOldToken(tokenOwner.wallet, 18);
+    const oldTokenContract = new ethers.Contract(oldTokenContractAddress, oldTokenAbi, tokenOwner.wallet);
+
     return {
         token: {
             address: tokenContractAddress,
             abi: tokenAbi,
             instance: tokenContract
+        },
+        oldToken: {
+            address: oldTokenContractAddress,
+            abi: oldTokenAbi,
+            instance: oldTokenContract
         },
         token10Decimals: {
             address: token10ContractAddress,

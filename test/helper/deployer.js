@@ -4,9 +4,10 @@ const provider = new ethers.providers.JsonRpcProvider(config.host, ethers.networ
 
 const WeiDex = require("../../build/contracts/WeiDex");
 const ERC20Mock = require("../../build/contracts/ERC20Mock");
+const OldERC20Mock = require("../../build/contracts/OldERC20Mock");
 const NewWeiDex = require("../../build/contracts/WeiDexMock");
 
-module.exports = { deployWeiDexExchangeContract, deployNewWeidexExchangeContract, deployToken };
+module.exports = { deployWeiDexExchangeContract, deployNewWeidexExchangeContract, deployToken, deployOldToken };
 
 async function deployWeiDexExchangeContract(wallet, feeWallet) {
     const params = [feeWallet.address, config.feeRate, config.referralFeeRate];
@@ -16,6 +17,10 @@ async function deployWeiDexExchangeContract(wallet, feeWallet) {
 async function deployNewWeidexExchangeContract(wallet) {
     const params = [];
     return await _deployExchange(NewWeiDex, wallet, params);
+}
+
+async function deployOldToken(wallet, decimals) {
+    return await _deployERC20(OldERC20Mock, wallet, "TestToken", "TT", decimals);
 }
 
 async function deployToken(wallet, decimals) {

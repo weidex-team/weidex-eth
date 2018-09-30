@@ -1,15 +1,8 @@
 pragma solidity ^0.4.24;
 
-import "./IERC20.sol";
+import "./OldERC20.sol";
 
-
-/**
- * @title ERC20Detailed token
- * @dev The decimals are only for visualization purposes.
- * All the operations are done using the smallest and indivisible token unit,
- * just as on Ethereum all the operations are done in wei.
- */
-contract ERC20Detailed is IERC20 {
+contract OldERC20Mock is OldERC20  {
     string private _name;
     string private _symbol;
     uint8 private _decimals;
@@ -39,5 +32,9 @@ contract ERC20Detailed is IERC20 {
      */
     function decimals() public view returns(uint8) {
         return _decimals;
+    }
+
+    function mint(address to, uint256 amount) public {
+        _mint(to, amount);
     }
 }
