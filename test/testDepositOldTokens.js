@@ -6,7 +6,7 @@ const { expectThrow } = require("./helper/exceptions");
 
 const { alice, evelyn, george } = actors;
 
-describe("deposit tokens", () => {
+describe("deposit old tokens", () => {
     let cfg;
 
     before(async () => {

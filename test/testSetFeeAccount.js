@@ -20,7 +20,6 @@ describe("should set new fee account", () => {
         assert(feeAccount, alice.wallet.address);
     });
 
-
     it("should throw exception if regular user tries to set the new fee account", async () => {
         weidexContract = weidexContract.connect(alice.wallet);
 

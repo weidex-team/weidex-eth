@@ -2,8 +2,6 @@ const actors = require("./config/actors");
 const contract = require("./helper/contract");
 const utils = require("./helper/utils");
 const { expectThrow } = require("./helper/exceptions");
-
-
 const { evelyn } = actors;
 
 describe("withdraw tokens", () => {

@@ -20,7 +20,6 @@ describe("should set fee", () => {
         assert(feeRateAfter, 200);
     });
 
-
     it("should throw exception if regular user tries to set the fee", async () => {
         weidexContract = weidexContract.connect(alice.wallet);
 
