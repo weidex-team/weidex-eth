@@ -5,13 +5,13 @@ import "./Exchange.sol";
 contract ReferralExchange is Exchange {
 
     uint256 public referralFeeRate;
-    
+
     mapping(address => address) public referrals;
-    
+
     constructor(
         uint256 _referralFeeRate
-    ) 
-        public 
+    )
+        public
     {
         referralFeeRate = _referralFeeRate;
     }
@@ -40,14 +40,16 @@ contract ReferralExchange is Exchange {
         external
         payable
     {
+        address user = msg.sender;
+
         require(
-            0x0 == referrals[msg.sender],
+            0x0 == referrals[user],
             "This user already have a referrer."
         );
 
-        super._depositEthers();
-        referrals[msg.sender] = _referrer;
-        emit ReferralDeposit(ETH, msg.sender, _referrer, msg.value, balances[ETH][msg.sender]);
+        super._depositEthers(user);
+        referrals[user] = _referrer;
+        emit ReferralDeposit(ETH, user, _referrer, msg.value, balances[ETH][user]);
     }
 
     /**
@@ -61,18 +63,20 @@ contract ReferralExchange is Exchange {
     )
         external
     {
+        address user = msg.sender;
+
         require(
-            0x0 == referrals[msg.sender],
+            0x0 == referrals[user],
             "This user already have a referrer."
         );
 
-        super._depositTokens(_tokenAddress, _amount);
-        referrals[msg.sender] = _referrer;
-        emit ReferralDeposit(_tokenAddress, msg.sender, _referrer, _amount, balances[_tokenAddress][msg.sender]);
+        super._depositTokens(_tokenAddress, _amount, user);
+        referrals[user] = _referrer;
+        emit ReferralDeposit(_tokenAddress, user, _referrer, _amount, balances[_tokenAddress][user]);
     }
 
     /**
-    * @dev Update the referral fee rate, 
+    * @dev Update the referral fee rate,
     * i.e. the rate of the fee that will be accounted to the referrer
     * @param _referralFeeRate uint256 amount of fee going to the referrer
     */
@@ -84,7 +88,7 @@ contract ReferralExchange is Exchange {
     }
 
     /**
-    * @dev Return the feeAccount address if user doesn't have referrer 
+    * @dev Return the feeAccount address if user doesn't have referrer
     * @param _user address user whom referrer is being checked.
     * @return address of user's referrer.
     */

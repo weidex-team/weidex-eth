@@ -2,6 +2,7 @@ const actors = require("./config/actors");
 const contract = require("./helper/contract");
 const utils = require("./helper/utils");
 const assert = require("./helper/assert").assertString;
+const { expectThrow } = require("./helper/exceptions");
 
 const { alice, evelyn, george } = actors;
 
@@ -28,14 +29,7 @@ describe("deposit ethers", () => {
         });
 
         it("should throw exception when tries to reassign the referrer", async () => {
-            await contract
-                .depositEthersWithReferral(cfg.exchange, evelyn.wallet, 0.5, george.wallet)
-                .then(() => {
-                    throw new Error("Exception not thrown");
-                })
-                .catch(err => {
-                    assert(err.message, "VM Exception while processing transaction: revert");
-                });
+            await expectThrow(contract.depositEthersWithReferral(cfg.exchange, evelyn.wallet, 0.5, george.wallet), 'revert');
         });
     });
 });
