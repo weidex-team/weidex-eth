@@ -3,7 +3,8 @@
     "version": "1.0.0",
     "description": "WeiDex Smart Contracts written in Solidity",
     "scripts": {
-        "test": "solidity-coverage"
+        "test": "solidity-coverage",
+        "prettier": "prettier --write **/*.sol"
     },
     "author": "WeiChain Ltd",
     "license": "MIT",
