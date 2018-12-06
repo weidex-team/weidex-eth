@@ -19,7 +19,8 @@
         "eslint": "^4.19.1",
         "eslint-config-prettier": "^2.9.0",
         "eslint-plugin-prettier": "^2.6.0",
-        "prettier": "^1.8.2",
+        "prettier": "^1.15.3",
+        "prettier-plugin-solidity": "^1.0.0-alpha.12",
         "solidity-coverage": "^0.5.11"
     }
 }
