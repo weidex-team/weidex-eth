@@ -301,7 +301,7 @@ Parameters:
 Fetch hisotry of orders for a given token. Returns only filled order.
 
 Parameters:
-    * ``userId`` – id of a user, which orders we want
+    * ``tokenId`` – id of a token, for which orders we want
 
 **Returns:**
 ::
@@ -330,3 +330,59 @@ Parameters:
             "tokenName":"AE"
         }
     ]
+
+/ticker/token/{tokenId}
+-----------------------------
+
+Get ticker for a given listed token.
+
+Parameters:
+    * ``tokenId`` – id of a token, for which ticker we want
+
+**Returns:**
+::
+
+    {
+        "quoteName":"WDX",
+        "baseName":"ETH",
+        "quoteVolume":1234.23,
+        "baseVolume":8.392764,
+        "last":0.00680999,
+        "highestBid":0.0067,
+        "lowestAsk":0.00680999,
+        "updatedAt":"2018-01-03T10:33:47.000+0000"
+    }
+
+/ticker/all
+-----------------------------
+
+Get tickers for all listed tokens.
+
+**Returns:**
+::
+
+    {
+        "AE_ETH":
+        {
+            "quoteName":"AE",
+            "baseName":"ETH",
+            "quoteVolume":0,
+            "baseVolume":0,
+            "last":0.00680999,
+            "highestBid":0.00665,
+            "lowestAsk":0.00675,
+            "updatedAt":"2018-01-03T08:15:41.000+0000"
+        },
+        "SCAVO_ETH":
+        {
+            "quoteName":"SCAVO",
+            "baseName":"ETH",
+            "quoteVolume":0,
+            "baseVolume":0,
+            "last":0.00001200,
+            "highestBid":0.00001020,
+            "lowestAsk":0.00006000,
+            "updatedAt":"2018-01-03T23:41:52.000+0000"
+        }
+    }
+    
