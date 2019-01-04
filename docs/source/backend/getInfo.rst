@@ -33,16 +33,23 @@ Parameters:
             "name":"WDX",
             "fullName":"WeiDexToken",
             "decimals":18,
-            "address":"0x5a0e34f6db3a15131bf9a16cea1766ac018580e4"
+            "address":"0x5a0e34f6db3a15131bf9a16cea1766ac018580e4",
+            "type":"ERC20"
         },
         {
             "id":1,
             "name":"OMG",
             "fullName":"OmiseGo",
             "decimals":18,
-            "address":"0x419d652028faaadb9c98fcd09d7a2b6fd82e9968"
+            "address":"0x419d652028faaadb9c98fcd09d7a2b6fd82e9968",
+            "type":"OldERC20"
         }
     ]
+
+``type`` can have one of the following values:
+::
+
+    "ERC20", "OldERC20"
 
 /balance/user/{userAddress}
 ---------------------------
@@ -86,13 +93,15 @@ Parameters:
             "amount":1000000000000000000,
             "txHash":"0x9978f7196e1ccb46e16605da4f65623245ff6cebb97454940ecfc42e10381cd4",
             "status":"SUCCESS",
-            "tokenName":"ETH"
+            "tokenName":"ETH",
+            "createdAt":"2018-10-01T15:13:25.000+0000"
         },
         {
             "amount":500000000000000000,
             "txHash":"0x832981e52efac16b107d4ce3cc87c3e10e599b9ba9635da5ea3cc4bc50e0b841",
             "status":"SUCCESS",
-            "tokenName":"WDX"
+            "tokenName":"WDX",
+            "createdAt":"2018-10-01T17:13:25.000+0000"
         }
     ]
 
@@ -226,7 +235,9 @@ Parameters:
             "price":0.01000000,
             "nonce":1,
             "status":"FILLED",
-            "txHash":"0x48602247890c89ac650a75fb399b4b8852e6f52b43ceb2adff2fd3572b3740c2"
+            "txHash":"0x48602247890c89ac650a75fb399b4b8852e6f52b43ceb2adff2fd3572b3740c2",
+            "makerAddress":"0x2156b0acbb9ae3cee0451f489cd42477c427072a",
+            "takerAddress":"0x7dd931c588e3e61acdef15b2ef7ede8cee405f5a"
         }
     ]
 
@@ -259,7 +270,8 @@ Parameters:
                 "name":"wdxb",
                 "fullName":"WeiDexBeta",
                 "decimals":18,
-                "address":"0x5a0e34f6db3a15131bf9a16cea1766ac018580e4"
+                "address":"0x5a0e34f6db3a15131bf9a16cea1766ac018580e4",
+                "type":"ERC20"
             },
             "type":"SELL",
             "amount":10000000000000000,
@@ -267,7 +279,9 @@ Parameters:
             "nonce":3,
             "status":"FILLED",
             "txHash":"0x0bae74dfad8fa381a273c124247e43579e6a6e44555e66290e6157d9f998911f",
-            "createdAt":"2018-09-24T12:04:26.000+0000"
+            "createdAt":"2018-09-24T12:04:26.000+0000",
+            "makerAddress":"0xc24f6b6cc5142c13ae04fe99f971d1d4723aa37a",
+            "takerAddress":"0x2156b0acbb9ae3cee0451f489cd42477c427072a"
         }
     ]
 
@@ -287,7 +301,7 @@ Parameters:
 Fetch hisotry of orders for a given token. Returns only filled order.
 
 Parameters:
-    * ``userId`` – id of a user, which orders we want
+    * ``tokenId`` – id of a token, for which orders we want
 
 **Returns:**
 ::
@@ -299,7 +313,10 @@ Parameters:
             "price":0.03000000,
             "createdAt":"2018-09-24T12:04:26.000+0000",
             "txHash":"0x0bae74dfad8fa381a273c124247e43579e6a6e44555e66290e6157d9f998911f",
-            "status":"FILLED"
+            "status":"FILLED",
+            "makerAddress":"0xc24f6b6cc5142c13ae04fe99f971d1d4723aa37a",
+            "takerAddress":"0x2156b0acbb9ae3cee0451f489cd42477c427072a",
+            "tokenName":"WDX"
         },
         {
             "type":"BUY",
@@ -307,6 +324,65 @@ Parameters:
             "price":0.01000000,
             "createdAt":"2018-09-24T11:26:39.000+0000",
             "txHash":"0x313ffd9fbbf6d141666ad21c54469badbee4c395929c2f984abba8ff22f3eaca",
-            "status":"FILLED"
+            "status":"FILLED",
+            "makerAddress":"0x2156b0acbb9ae3cee0451f489cd42477c427072a",
+            "takerAddress":"0xa97c7af62d2beeea77a292e3e3460b086396dc26",
+            "tokenName":"AE"
         }
     ]
+
+/ticker/token/{tokenId}
+-----------------------------
+
+Get ticker for a given listed token.
+
+Parameters:
+    * ``tokenId`` – id of a token, for which ticker we want
+
+**Returns:**
+::
+
+    {
+        "quoteName":"WDX",
+        "baseName":"ETH",
+        "quoteVolume":1234.23,
+        "baseVolume":8.392764,
+        "last":0.00680999,
+        "highestBid":0.0067,
+        "lowestAsk":0.00680999,
+        "updatedAt":"2018-01-03T10:33:47.000+0000"
+    }
+
+/ticker/all
+-----------------------------
+
+Get tickers for all listed tokens.
+
+**Returns:**
+::
+
+    {
+        "AE_ETH":
+        {
+            "quoteName":"AE",
+            "baseName":"ETH",
+            "quoteVolume":0,
+            "baseVolume":0,
+            "last":0.00680999,
+            "highestBid":0.00665,
+            "lowestAsk":0.00675,
+            "updatedAt":"2018-01-03T08:15:41.000+0000"
+        },
+        "SCAVO_ETH":
+        {
+            "quoteName":"SCAVO",
+            "baseName":"ETH",
+            "quoteVolume":0,
+            "baseVolume":0,
+            "last":0.00001200,
+            "highestBid":0.00001020,
+            "lowestAsk":0.00006000,
+            "updatedAt":"2018-01-03T23:41:52.000+0000"
+        }
+    }
+    
